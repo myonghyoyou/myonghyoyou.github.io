@@ -22,9 +22,7 @@ url     : https://myonghyoyou.github.io
 baseurl : # does not include hostname
 title   : Harry's Coding Lab
 description: > # this means to ignore newlines until "Language & timezone"
-  I'm dying for knowledge
-
-
+  
 ## => Language and Timezone
 ##############################
 lang: ko # the language of your site, default as "en"
@@ -38,7 +36,7 @@ author:
   name      : MyongHyo You
   url       :
   avatar    : # path or url of avatar image (square)
-  bio       : Frontend Developer of GeoService Crop
+  bio       : Frontend Dev of GeoService Crop
   email     : myonghyoyou@gmail.com
   facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
   twitter   : # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name

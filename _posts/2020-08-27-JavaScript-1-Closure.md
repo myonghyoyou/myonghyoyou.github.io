@@ -1,6 +1,6 @@
 ---
 title: JavaScript 1.클로저(Clousure)
-tags: 'JavaScript'(:.info)
+tags: JavaScript
 article_header:
   type: cover
   image:

@@ -1,5 +1,5 @@
 ---
-title: CodingGames 1.Power Of Thor &#58; Episode1
+title: CodingGames (1) Power Of Thor &#58; Episode1
 tags: CodingGames
 article_header:
   type: cover

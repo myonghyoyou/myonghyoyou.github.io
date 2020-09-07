@@ -7,7 +7,7 @@ article_header:
       src: 
 ---
 
-다음 문제인  Defibrillators 이다.
+다음 문제인 Defibrillators 이다.
 
 출력되는 수많은 정보들로부터 경위도를 수집한 뒤, 기존의 경위도와 비교하여 가장 가까운 장소의 이름을 출력하는 문제이다.  
 String의 split을 이용하여 위치 정보를 이름, 주소, 경도, 위도로 구분된 배열로 만든 뒤에 이름을 placeArray라는 배열에 넣는다.  

@@ -7,12 +7,12 @@ article_header:
       src: 
 ---
 
-다음 문제인 Defibrillators 이다.
+CSS를 다루는 부분에 있어서 많이 미흡하다는 판단이 들어서 진행한 토이 프로젝트이다.
 
-출력되는 수많은 정보들로부터 경위도를 수집한 뒤, 기존의 경위도와 비교하여 가장 가까운 장소의 이름을 출력하는 문제이다.  
-String의 split을 이용하여 위치 정보를 이름, 주소, 경도, 위도로 구분된 배열로 만든 뒤에 이름을 placeArray라는 배열에 넣는다. 그 다음 거리를 계산하는 수식을 거친 뒤에 거리 정보를 distArray라는 배열에 넣은 다음 가장 적은 값을 가진 value의 인덱스를 구해서 placeArray로부터 꺼내는 방식으로 해결했다.
+애니메이션 같은 경우 keyframes를 통해서 삽입했고 토글에 대한 부분을 classList.add 와 classList.remove를 통해서 이루어지게끔 했는데\
+지금 보니 코드가 굉장히 복잡하고 지저분해 보인다. 이렇게 코드가 작성될 경우 유지보수가 어려울 것 같다는 생각이 든다.\
+만들고자 하는 기능을 구현해내는 것도 중요하지만 코드의 효율성도 중요하다고 생각하는 요즘이다.\
+다음 프로젝트는 조금 더 간결하고 쉬운 코딩을 통해 완성시킬 수 있도록 해야겠다.
 
-```
 <div>{%- include extensions/codepen.html user='myonghyoyou' hash='MWyQjgY' default_tab='html,result' -%}</div>
-```
-{%- include extensions/codepen.html user='myonghyoyou' hash='MWyQjgY' default_tab='html,result' -%}
+

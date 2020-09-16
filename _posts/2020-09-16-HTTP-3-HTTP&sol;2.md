@@ -1,0 +1,145 @@
+---
+title: HTTP 3. HTTP/2
+tags: HTTP
+article_header:
+  type: cover
+  image: 
+      src: 
+---
+
+### 개요
+HTTP 메시지는 서버와 클라이언트 간에 데이터가 교환되는 방식이다. 메시지 타입은 요청과 응답 이렇게 두 가지가 있다.
+
+HTTP의 시작 줄과 HTTP 헤더를 묶어서 요청 헤드(head) 라고 부르며, 이와 반대로 HTTP 메시지의 페이로드는 본문(body)라고 한다.
+
+HTTP 초기 버전과 1.1에서는 HTTP 메시지를 사람이 읽을 수 있는 형태로 주고 받았으나 HTTP/2 로 넘어오며 바이너리 방식으로 송수신 되도록 바뀌었다. 
+HTTP 메시지는 대개 소프트웨어, 브라우저, 프록시 또는 서버가 작성하여 전송한다. 
+
+---
+
+### HTTP 요청
+
+#### 시작 줄
+HTTP 요청의 시작 줄은 다음 세 가지 요소로 이루어져 있다.
+
+1. 첫번재는 HTTP 메서드로, 영어 동사(`GET`, `PUT`, `POST`) 혹은 명사(`HEAD`, `OPTIONS`)를 사용하여 서버가 수행해야 할 동작을 나타낸다.
+  예를 들어, `GET`은 리소스를 클라이언트로 가져다 달라는 것을 의미하며, `POST`는 데이터가 서버로 들어가야 함을 의미한다. (FORM의 GET과 POST와는 다른 듯 하다)
+2. 두번째로는 주로 URL, 프로토콜, 포트, 도메인의 절대 경로를 나타내며 이들은 request context에 의해 정의된다. 요청 대상에 대한 포멧은 HTTP 메서드에 의해 달라진다.
+  포맷은 다음과 같다.
+  
+  * origin 형식 : 끝에 `'?'` 와 쿼리 문자열이 붙는 절대 경로이다. 가장 일반적인 형식으로 `GET`, `POST`, `HEAD`, `OPTIONS` 메서드와 함께 사용한다.
+    
+    ```
+    POST / HTTP 1.1
+    GET /background.png HTTP/1.0
+    HEAD /test.html?query=alibaba HTTP/1.1
+    OPTIONS /anypage.html HTTP/1.0
+    ```
+  
+  * absolute 형식 : 완전한 URL 형식. 프록시에 연결하는 경우 대부분 GET과 함께 사용된다.
+  
+    ```
+    GET http://developer.mozilla.org/en-US/docs/Web/HTTP/Messages HTTP/1.1
+    ```
+  
+  * authority 형식 : 도메인 이름 및 옵션 포트로 이루어진 URL의 authority component 이다. HTTP 터널을 구축하는 경우에만 CONNECT와 함께 사용한다.
+    ```
+    CONNECT developer.mozilla.org:80 HTTP/1.1
+    ```
+  * asterisk 형식 : `OPTIONS`와 함께 별표(`'*'`)하나로 간단하게 서버 전체를 나타낸다.
+    ```
+    OPTIONS * HTTP/1.1
+    ```
+3. 마지막으로 HTTP 버전이 들어간다. 메시지의 남은 구조를 결정하기 때문에, 응답 메시지에서 써야 할 HTTP 버젼을 알려주는 역할을 한다.
+
+#### 헤더
+
+요청에 들어가는 HTTP 헤더는 기본적인 구조를 가진다. 대소문자 구분 없는 문자열 다음에 콜론(`':'`)이 붙으며, 그 뒤에 오는 값은 헤더에 따라 달라진다. 
+헤더는 값까지 포함해 한 줄로 구성되며 이 때문에 꽤 길어질 수 있다.
+
+헤더에는 다양한 종류가 있는데, 이들은 아래와 같이 몇몇 그룹으로 구분할 수 있다.
+
+  * General 헤더 : `Via`와 같은 헤더는 메시지 전체에 적용된다.
+  * Request 헤더 : `User-Agent`, `Accept-Type` 과 같은 헤더는 요청의 내용을 좀 더 구체화 시키고(`Accept-Language`), 컨텍스트를 제공하기도 하며(`Referer`),
+                  조건에 따른 제약 사항을 가하기도 하면서(`If-None`) 요청 내용을 수정한다.
+  * Entity 헤더 : `Content-Length`와 같은 헤더는 요청 본문에 적용된다. 당연히 요청 내에 본문이 없을 때에는 전송되지 않는다.
+  
+  ```
+  POST / HTTP/1.1
+  
+  /////Request Headers/////
+  Host: localhost:8000
+  User-Agent: Mozilla/5.0 (Macintosh;... )... Firefox/51.0
+  Accept: text/html, application/xhtml+xml,...,*/*;q=0.8
+  Accept-Language: en-us,en;q=0.5
+  Accept-Enclding: gzip, deflate
+  
+  /////General Headers/////
+  Connection: keep-alive
+  Upgrade-Insecure-Requests: 1
+  
+  /////Entity Headers/////
+  Content-Type: multipart/form-data; boundary=-12656974
+  Content-Length: 345
+  ```
+
+#### 본문
+
+본문은 요청의 마지막 부분에 들어간다. 모든 요청마다 본문이 들어가는 것은 아니며, `GET`, `HEAD`, `DELETE`, `OPTIONS` 처럼 리소르를 가져오는 요청은 보통 본문이 필요없다.
+`POST` 요청일 경우에는 보통 업데이트를 위해 서버에 데이터를 전송한다.
+
+본문은 크게 두 가지 종류로 나뉜다.
+
+* 단일 리소스 본문 (Single-Resource Bodies) : 헤더 두 개(`Content-Type` 과 `Content-Length`)로 정의된 단일 파일로 구성된다.
+* 다중 리소스 본문 (Multiple-Resource Bodies) : 멀티파트 본문으로 구성되는 다중 리소스 분문에서는 파트마다 다른 정보를 지니게 된다. 
+
+---
+
+### HTTP 응답
+
+#### 상태 줄
+
+HTTP 응답의 시작 줄은 상태 줄(status line)이라고 불리며, 다음과 같은 정보를 가지고 있다.
+
+  1. 프로토콜 버전 : 보통 HTTP/1.1
+  2. 상태 코드 : 요청의 성공 여부. `200`, `404` 혹은 `302` 이다.
+  3. 상태 텍스트 : 짧고 간결하게 상태 코드에 대한 설명을 글로 나타내어 사용자가 HTTP 메시지를 이해할 때 도움이 된다.
+  
+상태 줄은 일반적으로 `HTTP/1.1 404 Not Found.` 같은 형태를 지닌다.
+
+#### 헤더
+
+응답에 들어가는 HTTP 헤더는 다른 헤더와 동일한 구조를 따른다. (HTTP 요청 참고)
+
+응답 헤더에는 다양한 종류가 있으며, 이들은 다음과 같이 나눌 수 있다.
+
+* General 헤더 : `Via`와 같은 헤더는 메시지 전체에 적용된다.
+* Response 헤더 : `Vary` 와 `Accept-Ranges`와 같은 헤더는 상태 줄에 미처 들어가지 못했던 서버에 대한 추가 정보를 제공한다.
+* Entity 헤더 : `Content-Length` 와 같은 헤더는 요청 본문에 적용된다. 요청이 없는 경우에 전송되지 않는다.
+
+#### 본문 
+
+본문은 응답의 마지막 부분에 들어간다. 모든 응답에 본문이 들어가지는 않으며, `201`, `204` 와 같은 상태 코드를 가진 응답에는 보통 본문이 존재하지 않는다.
+
+본문은 크게 세 가지 종류로 나뉜다.
+  
+  * 이미 길이가 알려진 단일 파일로 구성된 단일-리소스 본문 : 헤더 두 개(Content-Type 과 Content-Length)로 정의한다
+  * 길이를 모르는 단일 파일로 구성된 단일-리소스 본문 : Transfer-Encoding 이 chunked로 설정되어 있으며, 파일은 chunk로 나뉘어 인코딩 되어 있다.
+  * 서로 다른 정보를 담고 있는 멀티파트로 이루어지 다중-리소스 본문 : 이 경우는 드물다.
+
+---
+
+### HTTP/2 프레임
+
+HTTP/1.x 메시지는 몇가지 결함을 지닌다.
+
+  * 헤더가 압축이 되지 않는다.
+  * 연속된 메시지들은 비슷한 헤더 구조를 띄는데도 불구하고, 메시지마다 반복되어 전송
+  * 다중전송이 불가능. 서버 하나에 연결을 다중으로 열어야 함. 
+
+HTTP/2 에서는 메시지를 프레임으로 나누어 스트림에 끼워넣는다. 데이터와 헤더 프레임이 분리 되었기 때문에 헤더를 압축 할 수 있고 스트림 여러개를 하나로 묶을 수 있어서, TCP 연결이 좀 더 효율적으로 이루어진다. 결과적으로는, 개발자들이 HTTP 프레임을 매우 쉽게 살펴볼 수 있게 되었다. 가독성이 좋아진 것이다. 
+
+---
+<br>
+참조 : <br>
+https://developer.mozilla.org/ko/docs/Web/HTTP/Messages

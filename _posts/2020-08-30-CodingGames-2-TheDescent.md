@@ -4,7 +4,7 @@ tags: CodingGames
 article_header:
   type: cover
   image: 
-      src: ../assets/dragon-landing.jpg
+  
 ---
 이번에는 The Descent에 대한 풀이다.
 지문에 대한 이해는 충분했으나 접근 방식에서부터 엄청 꼬인 느낌이었다.

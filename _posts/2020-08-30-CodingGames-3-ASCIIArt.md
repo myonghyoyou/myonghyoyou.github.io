@@ -4,7 +4,7 @@ tags: CodingGames
 article_header:
   type: cover
   image: 
-      src: ../assets/images.jfif
+      
 ---
 이번에는 ASCII에 대한 풀이다.
 지문 이해부터 쉽지 않았찌만 파악할 수 있었고 겨우내 풀어냈다.

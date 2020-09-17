@@ -4,7 +4,7 @@ tags: CodingGames
 article_header:
   type: cover
   image: 
-      src: ../assets/thor.jpg
+  
 ---
 코스모스 스터디를 통해 CodingGames의 알고리즘 문제 풀이를 진행 중이다.
 오늘은 금주에 풀어야 하는 문제 외에도 이제껏 풀지 못했던 문제들까지 풀어보려고 한다.

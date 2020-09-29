@@ -1,5 +1,5 @@
 ---
-title: JavaScript 2.엄격 모드?
+title: JavaScript (2) 엄격 모드?
 tags: JavaScript
 article_header:
   type: cover

@@ -1,5 +1,5 @@
 ---
-title: JavaScript 4. 형 변환 
+title: JavaScript (4) 형 변환 
 tags: JavaScript
 article_header:
   type: cover

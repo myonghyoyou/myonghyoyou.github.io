@@ -142,10 +142,5 @@ alert( +apples + +watermelon ); // 5, 이항 덧셈 연산자가 적용되기 �
 
 ---
 
-### 할당 연산자
-
-
-
-
 참조 : <br>
 * https://ko.javascript.info/operators

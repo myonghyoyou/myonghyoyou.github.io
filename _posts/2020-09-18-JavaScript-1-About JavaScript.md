@@ -1,5 +1,5 @@
 ---
-title: JavaScript 1.자바스크립트란?
+title: JavaScript (1) 자바스크립트란?
 tags: JavaScript
 article_header:
   type: cover

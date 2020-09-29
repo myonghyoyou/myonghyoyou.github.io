@@ -1,5 +1,5 @@
 ---
-title: JavaScript 3. alert, prompt, confirm을 이용한 상호작용 
+title: JavaScript (3) alert, prompt, confirm을 이용한 상호작용 
 tags: JavaScript
 article_header:
   type: cover

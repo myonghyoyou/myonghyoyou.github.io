@@ -1,5 +1,5 @@
 ---
-title: JavaScript (7) 화살표 함수 기본
+title: JavaScript (8) 화살표 함수 기본
 tags: JavaScript
 article_header:
   type: cover
